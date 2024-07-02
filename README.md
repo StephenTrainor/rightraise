@@ -1,1 +1,1 @@
-![Mission Statement for RightRaise](https://github.com/StephenTrainor/rightraise.git/public/images/description.png)
+![Mission Statement for RightRaise](https://github.com/StephenTrainor/rightraise/blob/main/public/images/description.png)
