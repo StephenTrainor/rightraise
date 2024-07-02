@@ -152,10 +152,14 @@ export default function Dashboard() {
             <p class="text-2xl mb-4 md:mb-8 md:text-3xl centered">Welcome {(session) ? session.user.name : ""}</p>
 
             <div className="m-2 flex flex-col">
-                <div className="flex flex-row flex-wrap all-projects-container mx-auto content-between items-center">
-                    <Link class="mr-auto text-white" href="/create">Create Project</Link>
-                    <p className="mr-auto">or</p>  {/* finish all this crap */}
-                    <div>
+                <div className="flex flex-col lg:flex-row all-projects-container mx-auto content-between lg:justify-center items-center mb-4">
+                    <Link className="mx-auto lg:ml-auto" href="/create">
+                        <div className="light-bg hover:hover-bg button-container2">
+                            Create Project
+                        </div>
+                    </Link>
+                    <p className="mx-auto lg:mx-4">or</p>
+                    <div className="mx-auto lg:mr-auto">
                         <TextField 
                             required
                             error={codeError}
