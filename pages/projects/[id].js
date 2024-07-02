@@ -230,7 +230,7 @@ export default function Project({projectData, projectID}) {
                             <LineWithAnnotationsChart donations={project.donations} goal={project.goal} />
                         </div>
                         <Link href={`/donate/${projectID}`} className="mx-auto">
-                                <div className="light-bg hover:hover-bg project-container">
+                                <div className="light-bg hover:hover-bg button-container2">
                                     Donate Now!
                                 </div>
                             </Link>
@@ -288,22 +288,6 @@ export default function Project({projectData, projectID}) {
                         </div>
                     </div>
             }
-
-            {/* <div class="invisible sm:visible">
-                <p>sm</p>
-            </div>
-            <div class="invisible md:visible">
-                <p>md</p>
-            </div>
-            <div class="invisible lg:visible">
-                <p>lg</p>
-            </div>
-            <div class="invisible xl:visible">
-                <p>xl</p>
-            </div>
-            <div class="invisible 2xl:visible">
-                <p>2xl</p>
-        </div>*/}
         </Layout>
     );
 }

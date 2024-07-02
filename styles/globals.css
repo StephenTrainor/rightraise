@@ -65,6 +65,21 @@
     background-color: #b6b6c2;
 }
 
+.round-border-light-thin {
+    border-width: 1rem;
+    @apply rounded-3xl m-1
+}
+.round-border-light-thin:hover {
+    border-color: #b6b6c2;
+}
+
+.button-container2 {
+    @apply flex flex-row round-border-light-thin dark-text items-center
+}
+.button-container2:hover {
+    background-color: #b6b6c2;
+}
+
 .responsive-col {
     @media (min-width: 300px) {
         min-width: 20rem;
