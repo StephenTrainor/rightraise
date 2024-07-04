@@ -86,12 +86,14 @@ export default function Dashboard() {
     const getUserProjects = async (userID) => {
         const projectsOwnedQuery = query(collection(db, "projects"), where("projectOwnerID", "==", userID));
         const projectsOwnedSnapshot = await getDocs(projectsOwnedQuery);
+        var tempOwnedProjects = {};
 
         projectsOwnedSnapshot.forEach((doc) => {
-            setOwnedProjects({
-                ...ownedProjects,
-                [doc.id]: {"id": doc.id, ...doc.data()},
-            });
+            tempOwnedProjects[doc.id] = {"id": doc.id, ...doc.data()}
+        });
+        setOwnedProjects({
+            ...ownedProjects,
+            ...tempOwnedProjects,
         });
 
         const projectsJoinedQuery = query(collection(db, "projects"), where("projectParticipantIDs", "array-contains", userID));
@@ -101,7 +103,6 @@ export default function Dashboard() {
         projectsJoinedSnapshot.forEach((doc) => {
             tempJoinedProjects[doc.id] = {"id": doc.id, ...doc.data()}
         });
-
         setJoinedProjects({
             ...joinedProjects,
             ...tempJoinedProjects,
