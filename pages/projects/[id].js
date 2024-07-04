@@ -21,7 +21,7 @@ const updateEmailsByID = async (userID, projectID, project) => {
     await updateDoc(projectRef, {
         ['emailsByID.' + userID]: project.emailsByID[userID]
     });
-}; // NEXT TASK: Once email or phone number is verified, send out email or text message asynchronously
+};
 
 const updatePhoneNumbersByID = async (userID, projectID, project) => {
     const projectRef = doc(db, "projects", projectID);
@@ -222,10 +222,8 @@ export default function Project({projectData, projectID}) {
                 :
                     <div className="flex flex-col justify-center">
                         <div className="round-border responsive-col grid">
-                            <div className="mx-auto">
-                                <b><p className="">{project.name}</p></b>
-                            </div>
-                            <p className="">{project.description}</p>
+                            <b><p className="centered">{project.name}</p></b>
+                            <p>{project.description}</p>
 
                             <LineWithAnnotationsChart donations={project.donations} goal={project.goal} />
                         </div>
