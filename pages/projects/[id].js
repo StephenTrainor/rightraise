@@ -228,10 +228,10 @@ export default function Project({projectData, projectID}) {
                             <LineWithAnnotationsChart donations={project.donations} goal={project.goal} />
                         </div>
                         <Link href={`/donate/${projectID}`} className="mx-auto">
-                                <div className="light-bg hover:hover-bg button-container2">
-                                    Donate Now!
-                                </div>
-                            </Link>
+                            <div className="light-bg hover:hover-bg button-container2">
+                                Donate Now!
+                            </div>
+                        </Link>
                         <div className="p-4 m-6 mt-8 mb-8 m-auto responsive-col flex md:flex-row flex-col justify-center">
                             
                             <div className="bar-chart-container mb-32 md:mb-0">
