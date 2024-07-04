@@ -86,25 +86,25 @@
 
 .responsive-col {
     @media (min-width: 300px) {
-        min-width: 20rem;
+        width: 20rem;
     }
     @media (min-width: 640px) {
-        max-width: 22rem;
+        width: 22rem;
     }
     @media (min-width: 700px) {
-        max-width: 30rem;
+        width: 30rem;
     }
     @media (min-width: 768px) {
-        max-width: 36rem;
+        width: 36rem;
     }
     @media (min-width: 1024px) {
-        max-width: 40rem;
+        width: 40rem;
     }
     @media (min-width: 1280px) {
-        max-width: 46rem;
+        width: 46rem;
     }
     @media (min-width: 1536px) {
-        max-width: 52rem;
+        width: 52rem;
     }
 }
 
