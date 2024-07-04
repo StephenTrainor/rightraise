@@ -21,8 +21,8 @@ export default function LineWithAnnotationsChart({donations, goal}) {
 
     const options = {
         chart: {
-            height: 200 + deviceHeight / 4,
-            width: 400 + deviceWidth / 8,
+            height: "100%",
+            width: "100%",
             id: "GoalChart",
         },
         annotations: {
