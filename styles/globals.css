@@ -23,6 +23,10 @@
     }
 }
 
+.use-space {
+    min-height: 66vh;
+}
+
 .text-border {
     @apply p-3 sm:p-4 rounded-full border-2
 }
@@ -85,22 +89,22 @@
         min-width: 20rem;
     }
     @media (min-width: 640px) {
-        min-width: 22rem;
+        max-width: 22rem;
     }
     @media (min-width: 700px) {
-        min-width: 30rem;
+        max-width: 30rem;
     }
     @media (min-width: 768px) {
-        min-width: 36rem;
+        max-width: 36rem;
     }
     @media (min-width: 1024px) {
-        min-width: 40rem;
+        max-width: 40rem;
     }
     @media (min-width: 1280px) {
-        min-width: 46rem;
+        max-width: 46rem;
     }
     @media (min-width: 1536px) {
-        min-width: 52rem;
+        max-width: 52rem;
     }
 }
 
