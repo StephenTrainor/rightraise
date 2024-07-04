@@ -12,8 +12,11 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@getbrevo/brevo": "^2.2.0",
+    "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.20",
     "@next/font": "^14.2.4",
+    "@paypal/react-paypal-js": "^8.5.0",
+    "apexcharts": "^3.49.2",
     "axios": "^1.7.2",
     "eslint": "9.5.0",
     "eslint-config-next": "14.2.4",
@@ -23,7 +26,8 @@
     "react": "18.3.1",
     "react-apexcharts": "^1.4.1",
     "react-dom": "18.3.1",
-    "react-number-format": "^5.4.0"
+    "react-number-format": "^5.4.0",
+    "react-paypal-button-v2": "^2.6.3"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.19",
