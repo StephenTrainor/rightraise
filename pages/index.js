@@ -3,7 +3,6 @@ import Layout from '../components/layout';
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
-import Footer from '../components/Footer';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -11,6 +10,7 @@ export default function Home() {
   return (
     <Layout>
       <Navbar/>
+
       <div class="my-4 ml-4 mr-2 sm:m-8 lg:max-w-5xl lg:mx-auto">
         <p class="header1 centered mb-4 lg:mb-20">Donate to Programs That Matter</p>
 
