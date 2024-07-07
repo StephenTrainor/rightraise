@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import DollarInput from '../components/DollarInput';
-import TextInput from '../components/textInput';
+import TextInput from '../components/TextInputFix';
 import Layout from "../components/layout";
 import Navbar from "../components/Navbar";
 
