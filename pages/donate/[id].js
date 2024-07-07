@@ -1,6 +1,6 @@
 import Layout from "../../components/layout";
 import Navbar from "../../components/Navbar";
-import TextInput from "../../components/TextInputFix";
+import TextInput from "../../components/TextInput";
 import DollarInput from "../../components/DollarInput";
 import Alert from '@mui/material/Alert';
 import { useState } from "react";
