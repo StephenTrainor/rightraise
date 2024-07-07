@@ -65,44 +65,46 @@ export default function Donate({projectData, projectID}) {
                 )}
             </div>
 
-            <PayPalButton
-                amount={`${userInput.Amount}`}
-                currency="USD"
-                options={{
-                    // merchantId: "ATMRWafaGUcstVMAdHpCThqKtSpM3S8x83lrQf1D8Rl_28ULNIg5_0wiL3DB2seLYQ0RX-9LQJPyTikn", 
-                    clientId: "ATMRWafaGUcstVMAdHpCThqKtSpM3S8x83lrQf1D8Rl_28ULNIg5_0wiL3DB2seLYQ0RX-9LQJPyTikn", // FINISH THIS: SEND PAYMENTS TO FUNDRAISERS DIRECTLY
-                    // clientId: "AW9zwZxaKAORXHWe4zgw2dUHyGeEACOPMcBadDy_o1Tj0gw-3g-oe9sbTIJacbBXple9cGMn5nj9VXp3"
-                }}
-                catchError={(err) => {
-                    setFormError(true);
-                    console.error(err);
-                }}
-                onError={(err) => {
-                    setFormError(true);
-                    console.error(err);
-                }}
-                onSuccess={async (details, data) => {
-                    console.log(details); // why not
-                    console.log(data);
+            <div className="mt-6 flex flex-col items-center">
+                <PayPalButton
+                    amount={`${userInput.Amount}`}
+                    currency="USD"
+                    options={{
+                        // merchantId: "ATMRWafaGUcstVMAdHpCThqKtSpM3S8x83lrQf1D8Rl_28ULNIg5_0wiL3DB2seLYQ0RX-9LQJPyTikn", 
+                        clientId: projectData.paypalID || process.env.PAYPAL_CLIENT_ID
+                        // clientId: "AW9zwZxaKAORXHWe4zgw2dUHyGeEACOPMcBadDy_o1Tj0gw-3g-oe9sbTIJacbBXple9cGMn5nj9VXp3"
+                    }}
+                    catchError={(err) => {
+                        setFormError(true);
+                        console.error(err);
+                    }}
+                    onError={(err) => {
+                        setFormError(true);
+                        console.error(err);
+                    }}
+                    onSuccess={async (details, data) => {
+                        console.log(details);
+                        console.log(data);
 
-                    const response = await axios.post("../api/paypal/newDonation", {
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: {
-                            amount: userInput["Amount"],
-                            name: userInput["Name"],
-                            message: userInput["Message"],
-                            projectData: projectData,
-                            projectID, projectID
-                        },
-                    });
+                        const response = await axios.post("../api/paypal/newDonation", {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: {
+                                amount: userInput["Amount"],
+                                name: userInput["Name"],
+                                message: userInput["Message"],
+                                projectData: projectData,
+                                projectID, projectID
+                            },
+                        });
 
-                    console.log(response);
+                        console.log(response);
 
-                    router.push(`/thankyou/${projectID}`);
-                }}
-            />
+                        router.push(`/thankyou/${projectID}`);
+                    }}
+                />
+            </div>
         </Layout>
     );
 };
