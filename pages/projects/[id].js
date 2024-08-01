@@ -1,3 +1,4 @@
+import QRCode from "qrcode";
 import Layout from "../../components/layout";
 import Navbar from "../../components/Navbar";
 import PhoneNumberInput from "../../components/PhoneNumberInput";
@@ -12,6 +13,8 @@ import { domainStatus, sendEmailInvitation } from "../../lib/apiUtils";
 import utilStyles from "../../styles/utils.module.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import LineWithAnnotationsChart from "../../components/LineWithAnnotationsChart";
 import RadialBarChart from "../../components/RadialBarChart";
 
@@ -37,8 +40,10 @@ export default function Project({projectData, projectID}) {
     const [userID, setUserID] = useState();
 
     const project = projectData;
+    const [url, setUrl] = useState(`${process.env.BASE_URL}/projects/${projectID}`);
     const [emailsSent, setEmailsSent] = useState(0);
     const [phoneNumbersSent, setPhoneNumbersSent] = useState(0);
+    const [QRCodeDataUrl, setQRCodeDataUrl] = useState("");
 
     useEffect(() => {
         if (session) {
@@ -70,9 +75,21 @@ export default function Project({projectData, projectID}) {
             };
 
             getUserID(session.user.email);
-
         }
     }, [session]);
+
+    useEffect(() => {
+        const getQRCodeDataUrl = async () => {
+            try {
+                const qrCodeData = await QRCode.toDataURL(url);
+                setQRCodeDataUrl(qrCodeData);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        getQRCodeDataUrl();
+    }, []);
 
     const [input, setInput] = useState({
         "Email": "",
@@ -196,6 +213,18 @@ export default function Project({projectData, projectID}) {
             "PhoneNumber": true
         });
     };
+    
+    const copyQRCodeToClipboard = async () => {
+        try {
+            const response = await fetch(QRCodeDataUrl);
+            const blob = await response.blob();
+            const item = new ClipboardItem({ 'image/png': blob});
+
+            await navigator.clipboard.write([item]);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <Layout title={project.name}>
@@ -233,7 +262,6 @@ export default function Project({projectData, projectID}) {
                             </div>
                         </Link>
                         <div className="p-4 m-6 mt-8 mb-8 m-auto responsive-col flex md:flex-row flex-col justify-center">
-                            
                             <div className="bar-chart-container mb-32 md:mb-0">
                                 <RadialBarChart name="Emails Sent" progress={emailsSent} goal={25} />
                                 <p className="mt-5 mb-3 mx-auto text-sm">Add Email Addresses</p>
@@ -283,6 +311,22 @@ export default function Project({projectData, projectID}) {
                                     >Send</Button>
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            { (QRCodeDataUrl) ? (
+                                    <Button
+                                        variant="outlined"
+                                        color="primary" 
+                                        aria-label="Copy QR Code to Clipboard"
+                                        onClick={() => {copyQRCodeToClipboard()}}
+                                        startIcon={<QrCodeScannerIcon/>}
+                                    >
+                                        Copy QR
+                                    </Button>
+                                ) : (
+                                    <></>
+                                )
+                            }
                         </div>
                     </div>
             }
