@@ -193,9 +193,9 @@ export default function Create() {
                     </Accordion>
                 </div>
                 :
-                <div class="text-3xl text-center align-middle">
-                    <p class="m-4">Create a fundraiser or project once signed in</p>
-                    <p class="mt-8"><button onClick={() => signIn('google')} class="font-bold underline">Sign In</button> to get started</p>
+                <div className="text-3xl text-center align-middle">
+                    <p className="m-4">Create a fundraiser or project once signed in</p>
+                    <p className="mt-8"><button onClick={() => signIn('google')} class="font-bold underline">Sign In</button> to get started</p>
                 </div>
             }
         </Layout>

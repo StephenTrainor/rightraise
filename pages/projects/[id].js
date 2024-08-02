@@ -1,3 +1,4 @@
+import QRCode from "qrcode";
 import Layout from "../../components/layout";
 import Navbar from "../../components/Navbar";
 import PhoneNumberInput from "../../components/PhoneNumberInput";
@@ -12,8 +13,17 @@ import { domainStatus, sendEmailInvitation } from "../../lib/apiUtils";
 import utilStyles from "../../styles/utils.module.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import LineWithAnnotationsChart from "../../components/LineWithAnnotationsChart";
 import RadialBarChart from "../../components/RadialBarChart";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+  XIcon
+} from "react-share";
 
 const updateEmailsByID = async (userID, projectID, project) => {
     const projectRef = doc(db, "projects", projectID);
@@ -32,6 +42,8 @@ const updatePhoneNumbersByID = async (userID, projectID, project) => {
 };
 
 export default function Project({projectData, projectID}) {
+    const donateUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/donate/${projectID}`
+
     const router = useRouter();
     const { data: session } = useSession();
     const [userID, setUserID] = useState();
@@ -39,6 +51,7 @@ export default function Project({projectData, projectID}) {
     const project = projectData;
     const [emailsSent, setEmailsSent] = useState(0);
     const [phoneNumbersSent, setPhoneNumbersSent] = useState(0);
+    const [QRCodeDataUrl, setQRCodeDataUrl] = useState("");
 
     useEffect(() => {
         if (session) {
@@ -52,7 +65,6 @@ export default function Project({projectData, projectID}) {
                     tempUserID = doc.id;
                     setUserID(doc.id);
                 });
-
 
                 if (!project.emailsByID[tempUserID]) {
                     project.emailsByID[tempUserID] = [];
@@ -70,9 +82,21 @@ export default function Project({projectData, projectID}) {
             };
 
             getUserID(session.user.email);
-
         }
     }, [session]);
+
+    useEffect(() => {
+        const getQRCodeDataUrl = async () => {
+            try {
+                const qrCodeData = await QRCode.toDataURL(donateUrl);
+                setQRCodeDataUrl(qrCodeData);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        getQRCodeDataUrl();
+    }, []);
 
     const [input, setInput] = useState({
         "Email": "",
@@ -196,6 +220,18 @@ export default function Project({projectData, projectID}) {
             "PhoneNumber": true
         });
     };
+    
+    const copyQRCodeToClipboard = async () => {
+        try {
+            const response = await fetch(QRCodeDataUrl);
+            const blob = await response.blob();
+            const item = new ClipboardItem({ 'image/png': blob});
+
+            await navigator.clipboard.write([item]);
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <Layout title={project.name}>
@@ -233,7 +269,6 @@ export default function Project({projectData, projectID}) {
                             </div>
                         </Link>
                         <div className="p-4 m-6 mt-8 mb-8 m-auto responsive-col flex md:flex-row flex-col justify-center">
-                            
                             <div className="bar-chart-container mb-32 md:mb-0">
                                 <RadialBarChart name="Emails Sent" progress={emailsSent} goal={25} />
                                 <p className="mt-5 mb-3 mx-auto text-sm">Add Email Addresses</p>
@@ -282,6 +317,39 @@ export default function Project({projectData, projectID}) {
                                         onClick={() => {validatePhoneNumber()}}
                                     >Send</Button>
                                 </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <p className="my-10 text-xl lg:text-2xl">Share With Others!</p>
+                            <div className="flex flex-row justify-center items space-x-4">
+                                { (QRCodeDataUrl) ? (
+                                        <Button
+                                            variant="outlined"
+                                            color="primary" 
+                                            aria-label="Copy QR Code to Clipboard"
+                                            onClick={() => {copyQRCodeToClipboard()}}
+                                            startIcon={<QrCodeScannerIcon/>}
+                                        >
+                                            Copy QR
+                                        </Button>
+                                    ) : (
+                                        <></>
+                                    )
+                                }
+
+                                { (process.env.NEXT_PUBLIC_BASE_URL) ? 
+                                    <>
+                                        <FacebookShareButton url={donateUrl} className="">
+                                            <FacebookIcon size={32} round />
+                                        </FacebookShareButton>
+                                        <TwitterShareButton url={donateUrl} title={""}>
+                                            <XIcon size={32} round />
+                                        </TwitterShareButton>
+                                        <WhatsappShareButton url={donateUrl} title={""}>
+                                            <WhatsappIcon size={32} round />
+                                        </WhatsappShareButton>
+                                    </> : <></>
+                                }
                             </div>
                         </div>
                     </div>
