@@ -13,10 +13,17 @@ import { domainStatus, sendEmailInvitation } from "../../lib/apiUtils";
 import utilStyles from "../../styles/utils.module.css";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import LineWithAnnotationsChart from "../../components/LineWithAnnotationsChart";
 import RadialBarChart from "../../components/RadialBarChart";
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+  XIcon
+} from "react-share";
 
 const updateEmailsByID = async (userID, projectID, project) => {
     const projectRef = doc(db, "projects", projectID);
@@ -35,12 +42,13 @@ const updatePhoneNumbersByID = async (userID, projectID, project) => {
 };
 
 export default function Project({projectData, projectID}) {
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/projects/${projectID}`
+
     const router = useRouter();
     const { data: session } = useSession();
     const [userID, setUserID] = useState();
 
     const project = projectData;
-    const [url, setUrl] = useState(`${process.env.BASE_URL}/projects/${projectID}`);
     const [emailsSent, setEmailsSent] = useState(0);
     const [phoneNumbersSent, setPhoneNumbersSent] = useState(0);
     const [QRCodeDataUrl, setQRCodeDataUrl] = useState("");
@@ -57,7 +65,6 @@ export default function Project({projectData, projectID}) {
                     tempUserID = doc.id;
                     setUserID(doc.id);
                 });
-
 
                 if (!project.emailsByID[tempUserID]) {
                     project.emailsByID[tempUserID] = [];
@@ -312,21 +319,38 @@ export default function Project({projectData, projectID}) {
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            { (QRCodeDataUrl) ? (
-                                    <Button
-                                        variant="outlined"
-                                        color="primary" 
-                                        aria-label="Copy QR Code to Clipboard"
-                                        onClick={() => {copyQRCodeToClipboard()}}
-                                        startIcon={<QrCodeScannerIcon/>}
-                                    >
-                                        Copy QR
-                                    </Button>
-                                ) : (
-                                    <></>
-                                )
-                            }
+                        <div className="flex flex-col items-center">
+                            <p className="my-10 text-xl lg:text-2xl">Share With Others!</p>
+                            <div className="flex flex-row justify-center items space-x-4">
+                                { (QRCodeDataUrl) ? (
+                                        <Button
+                                            variant="outlined"
+                                            color="primary" 
+                                            aria-label="Copy QR Code to Clipboard"
+                                            onClick={() => {copyQRCodeToClipboard()}}
+                                            startIcon={<QrCodeScannerIcon/>}
+                                        >
+                                            Copy QR
+                                        </Button>
+                                    ) : (
+                                        <></>
+                                    )
+                                }
+
+                                { (process.env.NEXT_PUBLIC_BASE_URL) ? 
+                                    <>
+                                        <FacebookShareButton url={url} className="">
+                                            <FacebookIcon size={32} round />
+                                        </FacebookShareButton>
+                                        <TwitterShareButton url={url} title={""}>
+                                            <XIcon size={32} round />
+                                        </TwitterShareButton>
+                                        <WhatsappShareButton url={url} title={""}>
+                                            <WhatsappIcon size={32} round />
+                                        </WhatsappShareButton>
+                                    </> : <></>
+                                }
+                            </div>
                         </div>
                     </div>
             }
