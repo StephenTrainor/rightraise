@@ -42,7 +42,7 @@ const updatePhoneNumbersByID = async (userID, projectID, project) => {
 };
 
 export default function Project({projectData, projectID}) {
-    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/projects/${projectID}`
+    const donateUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/donate/${projectID}`
 
     const router = useRouter();
     const { data: session } = useSession();
@@ -88,7 +88,7 @@ export default function Project({projectData, projectID}) {
     useEffect(() => {
         const getQRCodeDataUrl = async () => {
             try {
-                const qrCodeData = await QRCode.toDataURL(url);
+                const qrCodeData = await QRCode.toDataURL(donateUrl);
                 setQRCodeDataUrl(qrCodeData);
             } catch (err) {
                 console.error(err);
@@ -339,13 +339,13 @@ export default function Project({projectData, projectID}) {
 
                                 { (process.env.NEXT_PUBLIC_BASE_URL) ? 
                                     <>
-                                        <FacebookShareButton url={url} className="">
+                                        <FacebookShareButton url={donateUrl} className="">
                                             <FacebookIcon size={32} round />
                                         </FacebookShareButton>
-                                        <TwitterShareButton url={url} title={""}>
+                                        <TwitterShareButton url={donateUrl} title={""}>
                                             <XIcon size={32} round />
                                         </TwitterShareButton>
-                                        <WhatsappShareButton url={url} title={""}>
+                                        <WhatsappShareButton url={donateUrl} title={""}>
                                             <WhatsappIcon size={32} round />
                                         </WhatsappShareButton>
                                     </> : <></>
