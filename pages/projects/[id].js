@@ -11,9 +11,18 @@ import { useSession, signIn } from "next-auth/react";
 import { getProjectIDs, getProjectData } from "../../lib/projects";
 import { domainStatus, sendEmailInvitation } from "../../lib/apiUtils";
 import utilStyles from "../../styles/utils.module.css";
+
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+
 import LineWithAnnotationsChart from "../../components/LineWithAnnotationsChart";
 import RadialBarChart from "../../components/RadialBarChart";
 import {
@@ -24,6 +33,14 @@ import {
   WhatsappShareButton,
   XIcon
 } from "react-share";
+
+const updateDonations = async (projectID, project) => {
+    const projectRef = doc(db, "projects", projectID);
+
+    await updateDoc(projectRef, {
+        donations: project.donations
+    });
+}
 
 const updateEmailsByID = async (userID, projectID, project) => {
     const projectRef = doc(db, "projects", projectID);
@@ -231,7 +248,13 @@ export default function Project({projectData, projectID}) {
         } catch (err) {
             console.error(err);
         }
-    }
+    };
+
+    const handleHideClick = async (i) => {
+        project.donations[i].hide = !project.donations[i].hide;
+
+        await updateDonations(projectID, project);
+    };
 
     return (
         <Layout title={project.name}>
@@ -351,6 +374,51 @@ export default function Project({projectData, projectID}) {
                                     </> : <></>
                                 }
                             </div>
+                        </div>
+                        <div className="round-border-large-margin flex flex-col items-center responsive-col">
+                            <TableContainer 
+                                component={Box}
+                                sx={{backgroundColor:"#0F172B"}}
+                            >
+                                <Table aria-label="Table with listed donations and message">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={(userID == project.projectOwnerID) ? 4 : 3}>Donor Board</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell>Donor</TableCell>
+                                            <TableCell>Message</TableCell>
+                                            {(userID == project.projectOwnerID) ? 
+                                                <TableCell align="right">Hide Message</TableCell>
+                                            : <></>}
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {project.donations.map((row, i) => (
+                                            <>
+                                            {(row.hide && userID != project.projectOwnerID) ? <></> :
+                                            <TableRow
+                                                key={row.name}
+                                            > 
+                                                <TableCell component="th" scope="row">{row.name}</TableCell>
+                                                <TableCell>{row.message}</TableCell>
+                                                {(userID == project.projectOwnerID) ?
+                                                    <TableCell align="right">
+                                                        <Button 
+                                                            onClick={() => handleHideClick(i)}
+                                                            variant="outlined" 
+                                                            color={(project.donations[i].hide) ? "success" : "error"}
+                                                        >
+                                                            {(project.donations[i].hide) ? "Unhide" : "Hide"}
+                                                        </Button>
+                                                    </TableCell>
+                                                : <></>}
+                                            </TableRow>}
+                                            </>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         </div>
                     </div>
             }
