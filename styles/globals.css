@@ -35,6 +35,10 @@
     @apply border-white rounded-3xl p-4 m-6 mx-auto border-2
 }
 
+.round-border-large-margin {
+    @apply border-white rounded-3xl p-4 mt-14 mx-auto border-2
+}
+
 .hover-bg {
     background-color: #2e4de7;
 }
