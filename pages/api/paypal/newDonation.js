@@ -13,6 +13,7 @@ export default async function handler(req, res) {
         amount: amount,
         message: message,
         name: name,
+        hide: false,
     });
 
     const projectRef = doc(db, "projects", projectID);
